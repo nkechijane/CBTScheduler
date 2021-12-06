@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CbtScheduler.Core\CbtScheduler.Core.csproj" />
+    <ProjectReference Include="..\CbtScheduler.Infrastructure\CbtScheduler.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
