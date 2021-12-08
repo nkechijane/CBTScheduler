@@ -1,4 +1,5 @@
 ﻿using CbtScheduler.Core.Entities;
+using CbtScheduler.Core.Entities.Dtos;
 using CbtScheduler.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,39 +16,147 @@ namespace CbtScheduler.Application.StudentScheduleService
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<string> AddAsync(StudentSchedule entity)
+        public async Task<ResponseDto> AddAsync(StudentSchedule entity)
         {
-            throw new NotImplementedException();
+            ResponseDto response = new ResponseDto();
+            try
+            {
+
+                var result = await _unitOfWork.StudentSchedules.AddAsync(entity);
+                response.Status = "success";
+                response.Message = "Data Successfully Inserted";
+                response.Payload = entity;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = "Fail";
+                response.Message = "An error occured!:" + ex.Message;
+                response.Payload = entity;
+                return response;
+            }
         }
 
-        public Task<string> DeleteAsync(int id)
+        public async Task<ResponseDto> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            ResponseDto response = new ResponseDto();
+            try
+            {
+                var result = await _unitOfWork.StudentSchedules.DeleteAsync(id);
+                response.Status = "Success";
+                response.Message = $"Data with {id} was Successfully deleted";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = "Fail";
+                response.Message = "An error occured!:" + ex.Message;
+                return response;
+            }
         }
 
-        public Task<IReadOnlyList<StudentSchedule>> GetAllAsync()
+        public async Task<ResponseDto> GetAllAsync()
         {
-            throw new NotImplementedException();
+            ResponseDto response = new ResponseDto();
+            try
+            {
+                var result = await _unitOfWork.StudentSchedules.GetAllAsync();
+                response.Status = "Success";
+                response.Message = "Data Successfully fetched";
+                response.Payload = result.ToList();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = "Fail";
+                response.Message = "An error occured!:" + ex.Message;
+                return response;
+            }
         }
 
-        public Task<IReadOnlyList<StudentSchedule>> GetAllStudentByTimeAsync(DateTime time)
+        public async Task<ResponseDto> GetStudentByDateAsync(DateTime time)
         {
-            throw new NotImplementedException();
+            ResponseDto response = new ResponseDto();
+            try
+            {
+                var result = await _unitOfWork.StudentSchedules.GetAllStudentByDateAsync(time);
+                response.Status = "Success";
+                response.Message = "Data Successfully fetched";
+                response.Payload = result.ToList();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = "Fail";
+                response.Message = "An error occured!:" + ex.Message;
+                return response;
+            }
         }
 
-        public Task<StudentSchedule> GetByIdAsync(int id)
+        public async Task<ResponseDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            ResponseDto response = new ResponseDto();
+            try
+            {
+                var result = await _unitOfWork.StudentSchedules.GetByIdAsync(id);
+                response.Status = "Success";
+                response.Message = "Data Successfully fetched";
+                response.Payload = result;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = "Fail";
+                response.Message = "An error occured!:" + ex.Message;
+                return response;
+            }
         }
 
-        public Task<StudentSchedule> GetStudentDataAsync(string matricNumber)
+        public async Task<ResponseDto> GetStudentByMatricNoAsync(string matricNumber)
         {
-            throw new NotImplementedException();
+            ResponseDto response = new ResponseDto();
+            try
+            {
+                var result = await _unitOfWork.StudentSchedules.GetStudentDataAsync(matricNumber);
+                response.Status = "Success";
+                response.Message = "Data Successfully fetched";
+                response.Payload = result;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Status = "Fail";
+                response.Message = "An error occured!:" + ex.Message;
+                return response;
+            }
         }
 
-        public Task<string> UpdateAsync(StudentSchedule entity)
+        public async Task<ResponseDto> UpdateAsync(UpdateDto entity)
         {
-            throw new NotImplementedException();
+            ResponseDto response = new ResponseDto();
+            try
+            {
+                var repodata = new StudentSchedule()
+                {
+                    Id = entity.Id,
+                    DayAndTime = entity.DayAndTime,
+                    Hall = entity.Hall,
+                    Lab = entity.Lab,
+                    UpdatedOn = entity.UpdatedOn
+                };
+
+                var result = await _unitOfWork.StudentSchedules.UpdateAsync(repodata);
+                response.Status = "Success";
+                response.Message = $" {entity} Successfully updated";
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                response.Status = "Fail";
+                response.Message = "An error occured!:" + ex.Message;
+                return response;
+            }
         }
     }
 }

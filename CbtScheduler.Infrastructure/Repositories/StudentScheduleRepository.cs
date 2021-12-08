@@ -21,8 +21,9 @@ namespace CbtScheduler.Infrastructure.Repositories
         public async Task<int> AddAsync(StudentSchedule entity)
         {
             entity.CreatedOn = DateTime.Now;
-            var sql = "Insert into StudentSchedule (MatricNumber, SessionId, SemesterId, Class, CourseCode," +
-                " Day, Time, All, CreatedOn, CreatedTime)";
+            var sql = "Insert into StudentSchedule (MatricNumber, SessionId, SemesterId, Class, CourseCode, " +
+                "CreatedOn, CreatedTime) VALUES (@MatricNumber, @SessionId, @SemesterId, @Class, @CourseCode, " +
+                "@CreatedOn, @CreatedTime)";
             using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnStr")))
             {
                 connection.Open();
@@ -42,7 +43,7 @@ namespace CbtScheduler.Infrastructure.Repositories
             }
         }
 
-        public async Task<IReadOnlyList<StudentSchedule>> GetAllAsync()
+        public async Task<List<StudentSchedule>> GetAllAsync()
         {
             var sql = "SELECT * FROM StudentSchedule";
             using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnStr")))
@@ -66,26 +67,21 @@ namespace CbtScheduler.Infrastructure.Repositories
 
         public async Task<int> UpdateAsync(StudentSchedule entity)
         {
-            var sql = "UPDATE StudentSchedule SET (MatricNumber, SessionId, SemesterId, Class, CourseCode, " +
-                "Day, Time, Hall, CreatedOn, CreatedTime, FROM CbtSchedule, Lab) VALUES (@MatricNumber, @SessionId, @SemesterId, @Class, @CourseCode, " +
-                "@Day, @Time, @Hall, @CreatedOn, @CreatedTime, @FROM @CbtSchedule, @Lab)";
+            var sql = "UPDATE StudentSchedule SET DayAndTime = @DayAndTime, Hall = @Hall, UpdatedOn = @UpdatedOn, Lab = @Lab WHERE Id = @id";
             using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnStr")))
             {
                 connection.Open();
-                var result = await connection.ExecuteAsync(sql, entity);
-                return result;
+                return await connection.ExecuteAsync(sql, entity);                
             }
         }
 
-        public async Task<IReadOnlyList<StudentSchedule>> GetAllStudentByTimeAsync(DateTime time)
+        public async Task<List<StudentSchedule>> GetAllStudentByDateAsync(DateTime DayAndTime)
         {
-            var dateData = time.Date.ToShortDateString();
-            var timeData = time.ToLongTimeString();
-            var sql = "SELECT * FROM StudentSchedule WHERE Time = @timeData AND Day = @dateData";
+            var sql = "SELECT * FROM StudentSchedule WHERE DayAndTime = @DayAndTime";
             using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnStr")))
             {
                 connection.Open();
-                var result = await connection.QueryAsync<StudentSchedule>(sql,new {timeData,dateData });
+                var result = await connection.QueryAsync<StudentSchedule>(sql, DayAndTime);
                 return result.ToList();
             }
         }
@@ -96,19 +92,7 @@ namespace CbtScheduler.Infrastructure.Repositories
             using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnStr")))
             {
                 connection.Open();
-                var result = await connection.QueryFirstOrDefaultAsync<StudentSchedule>(sql);
-                return result;
-            }
-        }
-
-        public async Task<IReadOnlyList<StudentSchedule>> GetAllStudentByDayAsync(DateTime date)
-        {
-            var sql = "SELECT FROM StudentSchedule WHERE Date = @date";
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnStr")))
-            {
-                connection.Open();
-                var result = await connection.QueryAsync<StudentSchedule>(sql);
-                return result.ToList();
+                return await connection.QueryFirstOrDefaultAsync<StudentSchedule>(sql);
             }
         }
     }

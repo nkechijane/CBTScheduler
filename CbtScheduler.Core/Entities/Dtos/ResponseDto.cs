@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CbtScheduler.Core.Dtos
+namespace CbtScheduler.Core.Entities.Dtos
 {
-    class ResponseDto
+    public class ResponseDto
     {
         public string Status { get; set; }
         public string Message { get; set; }

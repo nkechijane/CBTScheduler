@@ -9,6 +9,6 @@ namespace CbtScheduler.Core.Interfaces
 {
     public interface IUnitOfWork
     {
-        IStudentScheduleRepository StudentSchedule { get; set; }
+        IStudentScheduleRepository StudentSchedules { get; set; }
     }
 }

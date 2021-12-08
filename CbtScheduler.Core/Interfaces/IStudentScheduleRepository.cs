@@ -9,7 +9,7 @@ namespace CbtScheduler.Application.Interfaces
 {
     public interface IStudentScheduleRepository : IGenericRepository<StudentSchedule>
     {
-        Task<IReadOnlyList<StudentSchedule>> GetAllStudentByTimeAsync(DateTime time);
-        Task<IReadOnlyList<StudentSchedule>> GetStudentDataAsync(string matricNumber);
+        Task<List<StudentSchedule>> GetAllStudentByDateAsync(DateTime time);
+        Task<StudentSchedule> GetStudentDataAsync(string matricNumber);
     }
 }
