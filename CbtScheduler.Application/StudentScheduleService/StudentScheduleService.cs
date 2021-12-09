@@ -81,7 +81,7 @@ namespace CbtScheduler.Application.StudentScheduleService
             {
                 var result = await _unitOfWork.StudentSchedules.GetAllStudentByDateAsync(time);
                 response.Status = "Success";
-                response.Message = "Data Successfully fetched";
+                response.Message = "All Records Successfully fetched";
                 response.Payload = result.ToList();
                 return response;
             }
@@ -147,7 +147,7 @@ namespace CbtScheduler.Application.StudentScheduleService
 
                 var result = await _unitOfWork.StudentSchedules.UpdateAsync(repodata);
                 response.Status = "Success";
-                response.Message = $" {entity} Successfully updated";
+                response.Message = $" The record with {repodata.Id} Successfully updated";
                 return response;
 
             }
