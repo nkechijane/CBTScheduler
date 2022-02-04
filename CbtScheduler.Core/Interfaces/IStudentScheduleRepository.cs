@@ -11,5 +11,6 @@ namespace CbtScheduler.Application.Interfaces
     {
         Task<List<StudentSchedule>> GetAllStudentByDateAsync(DateTime time);
         Task<StudentSchedule> GetStudentDataAsync(string matricNumber);
+        Task<StudentSchedule> GetCbtCourseCodeAsync(string matricNumber);
     }
 }

@@ -17,5 +17,7 @@ namespace CbtScheduler.Core.Interfaces
         public Task<ResponseDto> DeleteAsync(int id);
         public Task<ResponseDto> GetStudentByMatricNoAsync(string matricNumber);
         public Task<ResponseDto> GetStudentByDateAsync(DateTime time);
+        public Task<string> GenerateTimeTableAsync();
+
     }
 }
